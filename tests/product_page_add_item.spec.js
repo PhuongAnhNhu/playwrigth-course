@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
 
 test("Product Page Add to Basket", async ({ page }) => {
-    await page.goto("localhost:2221");
+    // change baseURL in config file 
+    await page.goto("/");
 
     const addToBasketButton = page.locator('[data-qa="product-button"]').first();
     const basketCount = page.locator('[data-qa="header-basket-count"]');
@@ -13,6 +14,11 @@ test("Product Page Add to Basket", async ({ page }) => {
     await expect(addToBasketButton).toHaveText("Remove from Basket");
 
     await expect(basketCount).toHaveText("1");
+
+    const checkoutLink = page.getByRole('link', {name: 'Checkout'});
+    
+    await checkoutLink.waitFor();
+    await checkoutLink.click();
 
     await page.pause();
 });
